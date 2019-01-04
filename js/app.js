@@ -24,7 +24,7 @@ class Tamagotchi {
                 curCount: 0
             },
             age: {
-                threshold: 60,
+                threshold: 5,
                 curCount: 0
             }
         }
@@ -90,6 +90,11 @@ class Tamagotchi {
                     this.deathRender();
                 }
                 break;
+            case 'age':
+                if (this.age === 100) {
+                    $(`#${this.name}MessageBox`).prepend(`<p>${this.name} is evolving!</p>`);
+                    this.evolution();
+                }
         }
     }
     eat() {
@@ -126,15 +131,26 @@ class Tamagotchi {
             opacity: [1, 0]
         }, {
             duration: 1000,
-            delay: 500
+            complete: function(img) {
+                $(img).replaceWith($('<img src="https://i.imgur.com/PsxRMtw.png">').velocity({
+                    rotateX: [0, 90],
+                    opacity: [1, 0]
+                }, {
+                    duration: 1000,
+                }));
+            }
         });
-        $(`#${this.name}Img`).replaceWith($('<img src="https://i.imgur.com/PsxRMtw.png">').velocity({
-            rotateX: [90, 0],
-            opacity: [0, 1]
-        }, {
-            duration: 1000,
-            delay: 500
-        }));
+    }
+    evolution() {
+        if (this.species === 1) {
+            $(`#${this.name}Img`).replaceWith('<img id="${this.name}Img" src="https://i.imgur.com/1j3nXRm.png">');
+        } else if (this.species === 2) {
+            $(`#${this.name}Img`).replaceWith('<img id="${this.name}Img" src="https://i.imgur.com/N1BeGiD.png">');
+        } else if (this.species === 3) {
+            $(`#${this.name}Img`).replaceWith('<img id="${this.name}Img" src="https://i.imgur.com/MnVLQxa.png">');
+        } else if (this.species === 4) {
+            $(`#${this.name}Img`).replaceWith('<img id="${this.name}Img" src="https://i.imgur.com/NmpcryT.png">');
+        }
     }
 }
 
@@ -142,11 +158,9 @@ class Tamagotchi {
 const game = {
 
     tamagotchies: [],
-    init() {
-        let newName = prompt("Please enter your Tamagotchi's name.");
+    create(newName) {
         this.tamagotchies.push(new Tamagotchi(newName));
         this.render();
-
     },
     render() {
         let html;
@@ -158,6 +172,7 @@ const game = {
                 html = t.render();
                 t.rendered = true;
                 $('#tamaDisplay').append(html);
+                            
             }
         });
     },
@@ -182,9 +197,7 @@ const game = {
     }
 }
 
-
 game.timer();
-game.init();
 
 function getRandomBetween(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
@@ -192,9 +205,14 @@ function getRandomBetween(min, max) {
 
 //Event Listeners
 
-$('.tamaButtons').on('click', 'button', (e) => {
+$('#tamaDisplay').on('click', 'button', (e) => {
     let name = $(e.target).attr('data-name');
     let action = $(e.target).attr('data-action');
     let t = game.tamagotchies.find(t => t.name === name);
     t[action]();
+});
+
+$('#submit-btn').on('click', () => {
+    game.create($('#new-tama-name').val());
+    $("#new-tama-name").val('');
 });
