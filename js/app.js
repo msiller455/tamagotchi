@@ -122,21 +122,19 @@ class Tamagotchi {
     deathRender() {
         this.death = true;
         $(`#${this.name}Img`).velocity({
-            rotateX: 90,
+            rotateX: [-90, 0],
             opacity: [1, 0]
         }, {
             duration: 1000,
             delay: 500
         });
-        const $deathImg = $('<img src="https://i.imgur.com/PsxRMtw.png">');
-        $(`#${this.name}Img`).replaceWith($deathImg.velocity({
-            rotateX: -90,
+        $(`#${this.name}Img`).replaceWith($('<img src="https://i.imgur.com/PsxRMtw.png">').velocity({
+            rotateX: [90, 0],
             opacity: [0, 1]
         }, {
             duration: 1000,
             delay: 500
         }));
-
     }
 }
 
