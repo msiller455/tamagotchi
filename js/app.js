@@ -91,7 +91,7 @@ class Tamagotchi {
                 }
                 break;
             case 'age':
-                if (this.age === 100) {
+                if (this.age === 20) {
                     $(`#${this.name}MessageBox`).prepend(`<p>${this.name} is evolving!</p>`);
                     this.evolution();
                 }
