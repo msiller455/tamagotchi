@@ -3,6 +3,7 @@ let time = 0;
 //Tamagotchi Class
 class Tamagotchi {
     constructor(name) {
+        // "MODEL"
         this.name = name;
         this.hungry = 0;
         this.sleep = 0;
@@ -29,6 +30,8 @@ class Tamagotchi {
             }
         }
     }
+
+    // "VIEW"
     render() {
         return `
             <article>
@@ -38,7 +41,7 @@ class Tamagotchi {
                     <button data-name="${this.name}" data-action="rest"><ion-icon name="cloudy-night"></ion-icon></button>
                     <button data-name="${this.name}" data-action="play"><ion-icon name="tennisball"></ion-icon></button>
                 </div>
-                <div id="${this.name}Stats">
+                <div id="${this.name} Stats">
                     <p>Age: ${this.age}<br>
                     Hunger: ${this.hungry}<br>
                     Sleep: ${this.sleep}<br>
@@ -49,6 +52,7 @@ class Tamagotchi {
             </article>
         `;
     }
+
     updateStats() {
         let html = `
             <p>Age: ${this.age}<br>
@@ -58,6 +62,8 @@ class Tamagotchi {
         `;
         $(`#${this.name}Stats`).html(html);
     }
+
+    // "CONTROLLER"
     displayMessage(trait) {
         switch (trait) {
             case 'hungry':
@@ -97,6 +103,7 @@ class Tamagotchi {
                 }
         }
     }
+
     eat() {
         if(this.hungry < 2){
             $(`#${this.name}MessageBox`).prepend(`<p>${this.name} is not hungry right now!</p>`);
